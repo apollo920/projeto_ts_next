@@ -2,16 +2,16 @@ services:
   backend:
     build:
       context: .
-      dockerfile: freelancer-backend/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3333:3333"
     volumes:
-      - ./freelancer-backend:/app
+      - .:/app
       - /app/node_modules
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/freelancer
+      DATABASE_URL: postgres://postgres:postgres@db:5432/projeto_ts_next
     command: sh -c "npx prisma migrate deploy && npx tsx src/server.ts"
 
   db:
@@ -22,9 +22,9 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: freelancer
+      POSTGRES_DB: projeto_ts_next
     volumes:
       - pgdata:/var/lib/postgresql/data
 
 volumes:
-  pgdata: 
+  pgdata:

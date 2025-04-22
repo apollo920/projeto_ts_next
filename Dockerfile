@@ -18,5 +18,8 @@ COPY src ./src
 # Gerar o client do Prisma
 RUN npx prisma generate
 
+# Expor a porta
+EXPOSE 3333
+
 # Comando para rodar
 CMD ["npx", "tsx", "src/server.ts"]
