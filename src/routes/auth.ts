@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { prisma } from '../lib/prisma'
 import bcrypt from 'bcrypt'
 import { verifyJWT } from '../plugins/auth'
+import { UserPayload } from '../@types'
 
 export async function authRoutes(app: FastifyInstance) {
   app.post('/signup', async (request, reply) => {
@@ -58,9 +59,10 @@ export async function authRoutes(app: FastifyInstance) {
   })
 
   app.get('/me', { preHandler: [verifyJWT] }, async (request, reply) => {
-    const userId = request.user.sub
+    const user = request.user as UserPayload
+    const userId = user.sub
   
-    const user = await prisma.user.findUnique({
+    const userData = await prisma.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
@@ -71,10 +73,10 @@ export async function authRoutes(app: FastifyInstance) {
       },
     })
   
-    if (!user) {
+    if (!userData) {
       return reply.status(404).send({ message: 'Usuário não encontrado.' })
     }
   
-    return { user }
+    return { user: userData }
   })
 }
