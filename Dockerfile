@@ -14,9 +14,11 @@ RUN npm install
 # Copiar código do projeto e schema do Prisma
 COPY prisma ./prisma
 COPY src ./src
+COPY wait-for-it.sh .
 
 # Gerar o client do Prisma
 RUN npx prisma generate
+RUN chmod +x wait-for-it.sh
 
 # Expor a porta
 EXPOSE 3333

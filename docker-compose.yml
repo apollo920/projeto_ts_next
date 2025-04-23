@@ -11,8 +11,10 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/projeto_ts_next
-    command: sh -c "npx prisma migrate deploy && npx tsx src/server.ts"
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/projeto_ts_next?schema=public
+      JWT_SECRET: supersecret
+      NODE_ENV: development
+    command: sh -c "sleep 10 && npx prisma migrate deploy && exec npx tsx watch src/server.ts"
 
   db:
     image: postgres:16
